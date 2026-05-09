@@ -1,0 +1,51 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "electron/**"
+      - "src/**"
+      - "public/**"
+      - "build/**"
+      - "package.json"
+      - "package-lock.json"
+      - "electron-builder.yml"
+      - "vite.config.ts"
+      - ".github/workflows/build-windows.yml"
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    name: Build NSIS installer (windows-latest)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web frontend
+        run: npm run build
+
+      - name: Build Windows NSIS installer
+        env:
+          # Skip auto-publish; we attach the artifact to the workflow run.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --win nsis --x64 --publish never
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FaceLume-Setup
+          path: dist-installers/FaceLume-Setup.exe
+          if-no-files-found: error
+          retention-days: 30

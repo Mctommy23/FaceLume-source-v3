@@ -1,0 +1,2 @@
+ALTER TABLE public.credit_purchases ADD COLUMN IF NOT EXISTS order_id text;
+CREATE UNIQUE INDEX IF NOT EXISTS credit_purchases_order_id_key ON public.credit_purchases(order_id) WHERE order_id IS NOT NULL;

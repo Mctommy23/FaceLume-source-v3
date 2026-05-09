@@ -1,0 +1,63 @@
+appId: app.facelume.desktop
+productName: FaceLume
+copyright: Copyright © 2026 FaceLume
+
+directories:
+  output: dist-installers
+  buildResources: build
+
+# Files to include in the packaged app. We ship only what the
+# Electron main process needs: the compiled web frontend in dist/,
+# the electron/ main + preload scripts, and package.json.
+files:
+  - "dist/**/*"
+  - "electron/**/*"
+  - "package.json"
+  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
+  - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
+  - "!**/*.{md,markdown}"
+  - "!**/{.DS_Store,.git,.svn,.hg,CVS,RCS,SCCS,.gitignore,.gitattributes}"
+
+asar: true
+
+# Persistent session lives in userData; nothing extra to bundle.
+extraResources: []
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: build/icon.ico
+  artifactName: ${productName}-Setup.${ext}
+  # Skip rcedit (which needs Wine on Linux). Safe while we're not code-signing.
+  signAndEditExecutable: false
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: FaceLume
+
+mac:
+  target:
+    - target: dmg
+      arch: [arm64, x64]
+  category: public.app-category.video
+  icon: build/icon.icns
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: build/entitlements.mac.plist
+  entitlementsInherit: build/entitlements.mac.plist
+
+dmg:
+  artifactName: ${productName}-${version}-${arch}.${ext}
+
+linux:
+  target:
+    - AppImage
+    - deb
+  category: AudioVideo
+  icon: build/icon.png
+  artifactName: ${productName}-${version}-${arch}.${ext}

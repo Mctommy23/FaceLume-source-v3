@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.prevent_profile_privilege_escalation() FROM PUBLIC, anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.prevent_activation_payment_tampering() FROM PUBLIC, anon, authenticated;

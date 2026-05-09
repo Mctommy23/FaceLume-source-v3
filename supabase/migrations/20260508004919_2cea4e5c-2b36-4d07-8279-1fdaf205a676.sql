@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS low_credits_notified_at TIMESTAMPTZ;
