@@ -75,7 +75,9 @@ function createWindow() {
   });
 
   win.loadURL(APP_URL);
+
   win.webContents.openDevTools();
+
 
   // Atlos opens a popup wallet checkout. Keep popups inside the desktop
   // app (new BrowserWindow on the same partition) so the Supabase
