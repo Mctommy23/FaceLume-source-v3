@@ -74,9 +74,18 @@ function createWindow() {
     },
   });
 
-  win.loadURL(APP_URL);
+  
+win.loadURL(APP_URL);
 
-  win.webContents.openDevTools({ mode: "detach" });
+win.webContents.openDevTools({ mode: "detach" });
+
+win.webContents.on("did-fail-load", (event, errorCode, errorDescription) => {
+  console.log("FAILED TO LOAD:", errorCode, errorDescription);
+});
+
+win.webContents.on("console-message", (event, level, message) => {
+  console.log("RENDERER:", message);
+});
 
 
   // Atlos opens a popup wallet checkout. Keep popups inside the desktop
