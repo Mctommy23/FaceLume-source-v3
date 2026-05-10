@@ -76,7 +76,7 @@ function createWindow() {
 
   win.loadURL(APP_URL);
 
-  win.webContents.openDevTools();
+  win.webContents.openDevTools({ mode: "detach" });
 
 
   // Atlos opens a popup wallet checkout. Keep popups inside the desktop
